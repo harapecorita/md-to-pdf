@@ -9,7 +9,7 @@ import path from 'path'
 const app = new Hono()
 const port = 3000
 
-async function getStyles() {
+async function getStyles(): Promise<string> {
   try {
     const cssPath = path.join(process.cwd(), 'styles', 'print.css')
     return await fs.readFile(cssPath, 'utf8')
@@ -20,7 +20,7 @@ async function getStyles() {
 }
 
 app.post('/convert', async c => {
-  const body = await c.req.json()
+  const body = (await c.req.json()) as { markdown?: string }
   const markdown = body.markdown || ''
   const styles = await getStyles()
   const html = `<!doctype html><html><head><meta charset="utf-8"><style>${styles}</style></head><body>${marked(markdown)}</body></html>`
