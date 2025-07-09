@@ -9,6 +9,13 @@ import path from 'path'
 const app = new Hono()
 const port = 3000
 
+app.get('/', async c => {
+  const htmlPath = path.join(process.cwd(), 'public', 'index.html')
+  const html = await fs.readFile(htmlPath, 'utf8')
+  c.header('Content-Type', 'text/html; charset=utf-8')
+  return c.body(html)
+})
+
 async function getStyles(): Promise<string> {
   try {
     const cssPath = path.join(process.cwd(), 'styles', 'print.css')
